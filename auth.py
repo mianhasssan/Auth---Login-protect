@@ -1,6 +1,10 @@
 from fastapi import APIRouter, HTTPException
 from models import UserAuth
 from supabase_client import supabase
+from fastapi import Depends
+from fastapi.responses import Response
+from dependencies import get_current_user
+from supabase_client import supabase
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
@@ -54,3 +58,12 @@ def login(user: UserAuth):
             status_code=401,
             detail="Invalid login credentials"
         )
+    
+
+
+@router.post("/logout", status_code=204)
+def logout(
+    user = Depends(get_current_user)
+):
+    supabase.auth.sign_out()
+    return Response(status_code=204)
