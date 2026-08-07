@@ -1,4 +1,4 @@
-````text
+
 # 🔐 FlyRank Authentication API
 
 A secure REST API built with Python, FastAPI, and Supabase Authentication.
@@ -40,7 +40,6 @@ Built as part of the FlyRank Internship – Backend Track – Week 4 – Authent
 
 ## 🏗️ Architecture
 
-```text
 ┌──────────────┐
 │    Client    │
 └──────┬───────┘
