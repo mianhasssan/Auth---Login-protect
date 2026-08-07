@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from protected import router as protected_router
 import uvicorn
 
 from auth import router
@@ -10,6 +11,7 @@ app = FastAPI(
 )
 
 app.include_router(router)
+app.include_router(protected_router)
 
 
 @app.get("/")
