@@ -40,6 +40,7 @@ Built as part of the FlyRank Internship – Backend Track – Week 4 – Authent
 
 ## 🏗️ Architecture
 
+```text
 ┌──────────────┐
 │    Client    │
 └──────┬───────┘
