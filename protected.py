@@ -12,9 +12,7 @@ def public_info():
 
 
 @router.get("/protected/profile")
-def protected_profile(
-    user = Depends(get_current_user)
-):
+def protected_profile(user=Depends(get_current_user)):
     return {
         "id": user.id,
         "email": user.email,
@@ -23,9 +21,7 @@ def protected_profile(
 
 
 @router.get("/protected/dashboard")
-def dashboard(
-    user = Depends(get_current_user)
-):
+def dashboard(user=Depends(get_current_user)):
     return {
         "message": f"Welcome {user.email}",
         "dashboard": "Protected Dashboard"
