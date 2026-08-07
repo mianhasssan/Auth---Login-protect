@@ -1,4 +1,7 @@
+from typing import Optional
+
 from fastapi import APIRouter, Header, HTTPException
+from supabase_client import supabase
 
 router = APIRouter(tags=["Protected Routes"])
 
@@ -11,32 +14,42 @@ def public_info():
 
 
 @router.get("/protected/profile")
-def protected_profile(authorization: str = Header(default=None)):
+def protected_profile(
+    authorization: Optional[str] = Header(None)
+):
 
-    # Check if Authorization header exists
-    if authorization is None:
+    # Authorization header missing
+    if not authorization:
         raise HTTPException(
             status_code=401,
             detail={"error": "Access token required"}
         )
 
-    # Check Bearer format
+    # Wrong format
     if not authorization.startswith("Bearer "):
         raise HTTPException(
             status_code=401,
             detail={"error": "Access token required"}
         )
 
-    token = authorization.replace("Bearer ", "").strip()
+    token = authorization.split(" ", 1)[1]
 
-    # Check token is not empty
-    if token == "":
+    try:
+
+        # Verify JWT with Supabase
+        response = supabase.auth.get_user(token)
+
+        user = response.user
+
+        return {
+            "id": user.id,
+            "email": user.email,
+            "created_at": user.created_at
+        }
+
+    except Exception:
+
         raise HTTPException(
             status_code=401,
-            detail={"error": "Access token required"}
+            detail={"error": "Invalid or expired token"}
         )
-
-    return {
-        "message": "Access token received.",
-        "token": token
-    }
